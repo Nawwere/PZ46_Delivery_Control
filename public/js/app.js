@@ -13,6 +13,30 @@ function setStatus(message, kind = "info") {
 function renderParcels(items) {
   // TODO 1: выведите карточки доставок через createElement/textContent.
   // Пустой массив должен отображаться сообщением, а не ошибкой.
+  list.replaceChildren();
+  if (items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Доставки не найдены.";
+    list.appendChild(empty);
+    summary.textContent = "Всего доставок: 0";
+    return;
+  }
+  items.forEach((parcel) => {
+    const card = document.createElement("article");
+    card.className = "parcel-card";
+    const id = document.createElement("h3");
+    id.textContent = "Номер: " + parcel.id;
+    const recipient = document.createElement("p");
+    recipient.textContent = "Получатель: " + parcel.recipient;
+    const destination = document.createElement("p");
+    destination.textContent = "Город: " + parcel.destination;
+    const state = document.createElement("p");
+    state.textContent = "Статус: " + parcel.state;
+    card.append(id, recipient, destination, state);
+    list.appendChild(card);
+  });
+  summary.textContent = "Всего доставок: " + items.length;
 }
 async function loadParcels() {
   // TODO 2: для каждого запроса создайте новый AbortController, signal и таймер 2500 мс.
